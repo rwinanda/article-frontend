@@ -86,7 +86,6 @@ function Home() {
               </div>
             </div>
           </div>
-
         </div>
 
         {/* List Article */}
