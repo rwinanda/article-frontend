@@ -2,7 +2,7 @@
 
 import ContentPages from "@/components/admin-component/ContentPages";
 import PaginationAdmin from "@/components/admin-component/PaginationAdmin";
-import Search from "@/components/admin-component/Search";
+// import Search from "@/components/admin-component/Search";
 import TitlePages from "@/components/admin-component/TitlePages";
 import TopContent from "@/components/admin-component/TopContent";
 import SkeletonCategories from "@/components/loading/loading-skeleton/SkeletonCategories";
