@@ -1,14 +1,20 @@
+import { useEffect } from "react"
+
 interface Props {
     currentPage: number
     totalData: number
     limitData: number
     onPageChange: (data: number) => void
-    setCurPage: (data: number) => void
+    setCurPage?: (data: number) => void
 }
 
 const PaginationAdmin = ({ currentPage, totalData, limitData, onPageChange, setCurPage }: Props) => {
-    setCurPage(currentPage)
-    const totalPages = Math.ceil(totalData/limitData);
+    useEffect(() => {
+
+        setCurPage?.(currentPage)
+    }, [currentPage, setCurPage])
+    
+    const totalPages = Math.ceil(totalData / limitData);
     const renderPaginations = () => {
         const pages = [];
 
@@ -21,7 +27,7 @@ const PaginationAdmin = ({ currentPage, totalData, limitData, onPageChange, setC
                 pages.push(
                     <button
                         key={i}
-                        className={`px-3 py-1 rounded ${i === currentPage ? 'border border-slate-200' : 'hover:bg-gray-100'
+                        className={`px-3 py-1 rounded cursor-pointer ${i === currentPage ? 'border border-slate-200' : 'hover:bg-gray-100'
                             }`}
                         onClick={() => onPageChange(i)}
                     >
@@ -48,7 +54,7 @@ const PaginationAdmin = ({ currentPage, totalData, limitData, onPageChange, setC
             <div className="flex w-full justify-center items-center">
                 <div className="flex justify-center items-center gap-2 text-sm font-medium text-gray-700">
                     <button
-                        className="px-3 py-1 rounded text-slate-900 hover:bg-gray-100"
+                        className="px-3 py-1 rounded text-slate-900 hover:bg-gray-100 cursor-pointer"
                         disabled={currentPage === 1}
                         onClick={() => onPageChange(currentPage - 1)}
                     >
@@ -58,7 +64,7 @@ const PaginationAdmin = ({ currentPage, totalData, limitData, onPageChange, setC
                     {renderPaginations()}
 
                     <button
-                        className="px-3 py-1 rounded text-slate-900 hover:bg-gray-100"
+                        className="px-3 py-1 rounded text-slate-900 hover:bg-gray-100 cursor-pointer"
                         disabled={currentPage === totalPages}
                         onClick={() => onPageChange(currentPage + 1)}
                     >
