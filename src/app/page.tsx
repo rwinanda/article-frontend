@@ -4,6 +4,8 @@ import Search from "@/components/admin-component/Search";
 import ListArticle from "@/components/grid/ListArticle";
 import Navbar from "@/components/Navbar";
 import SelectCategory from "@/components/select/SelectCategory";
+import { setNavbarBgScroll } from "@/redux/features/navbar/navbarSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { GetAllCategoryAPI } from "@/services/categoryService";
 import { ArticleQuery } from "@/types/articleTypes";
 import { CategoryParam, CategoryResponse } from "@/types/categoryTypes";
@@ -20,6 +22,9 @@ function Home() {
     title: "",
     category: ""
   });
+
+  const navbarBgScroll = useAppSelector((state) => state.navbar);
+  const dispatch = useAppDispatch();
 
   // Debounce for search
   useEffect(() => {
@@ -49,10 +54,50 @@ function Home() {
     fetchData()
   }, []);
 
+  // Navbar Effect
+  useEffect(() => {
+    const handleScroll = () => {
+      console.log(`${window.scrollY}`)
+      if (window.scrollY > 400) { // white navbar
+        console.log("white")
+        dispatch(setNavbarBgScroll(({
+          ...navbarBgScroll,
+          navbar: "bg-white shadow-sm",
+          fontColor: "text-black",
+          logoImage: "/images/logoipsum.png"
+        })));
+      } else if (window.scrollY > 5) { // blur navbar
+        dispatch(setNavbarBgScroll(({
+          ...navbarBgScroll,
+          navbar: "backdrop-blur-sm shadow-sm",
+          fontColor: "text-white",
+          logoImage: "/images/logoipsum-white.png"
+        })));
+      } else {
+        dispatch(setNavbarBgScroll(({
+          ...navbarBgScroll,
+          navbar: "",
+          fontColor: "text-white",
+          logoImage: "/images/logoipsum-white.png",
+        })));
+      }
+    };
+
+    console.log("window.addEventListener")
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      console.log("window.removeEventListener")
+      window.removeEventListener("scroll", handleScroll)
+    };
+  }, [dispatch, navbarBgScroll]);
+
   return (
     <>
       <div className="flex flex-col">
         {/* Top Header */}
+        {/* Navbar */}
+        <Navbar />
+
         <div className="relative w-full h-125">
           {/* Background Picture */}
           <div className="absolute inset-0 z-0">
@@ -61,11 +106,8 @@ function Home() {
 
           {/* Background Colour */}
           <div className="absolute bg-[#2563EBDB] w-full h-125 z-20">
-            {/* Navbar */}
-            <Navbar />
-
             {/* Content Header */}
-            <div className="flex justify-center w-full">
+            <div className={`flex justify-center w-full mt-32`}>
               <div className="flex flex-col w-[730px] items-center justify-center">
                 <p className="text-white font-bold mb-3">
                   Blog genzet
@@ -89,7 +131,9 @@ function Home() {
         </div>
 
         {/* List Article */}
-        <ListArticle articleParam={articleParam} setArticleParam={setArticleParam} />
+        <div className="pt-20">
+          <ListArticle articleParam={articleParam} setArticleParam={setArticleParam} />
+        </div>
       </div>
     </>
   );
