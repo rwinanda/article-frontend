@@ -2,7 +2,9 @@
 
 import GridCard from '@/components/grid/GridCard'
 import SkeletonImage from '@/components/loading/loading-skeleton/SkeletonImage';
-import NavbarSecond from '@/components/NavbarSecond';
+import Navbar from '@/components/Navbar';
+import { setNavbarBgScroll } from '@/redux/features/navbar/navbarSlice';
+import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { GetAllArticleAPI, GetArticleByIdAPI } from '@/services/articleService';
 import { ArticleDetailResp } from '@/types/articleDetailTypes';
 import { ArticleQuery, ArticleResponse } from '@/types/articleTypes';
@@ -14,7 +16,6 @@ const DetailArticleById = () => {
 
     const [detailArticle, setDetailArticle] = useState<ArticleDetailResp>({} as ArticleDetailResp);
     const [articleResponse, setArticleResponse] = useState<ArticleResponse>({} as ArticleResponse);
-    // const [getCategoryId, setGetCategoryId] = useState("")
     const [articleParam, setArticleParam] = useState<ArticleQuery>({
         page: 1,
         limit: 10,
@@ -24,6 +25,16 @@ const DetailArticleById = () => {
 
     const params = useParams();
     const articleId = params.id as string;
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(setNavbarBgScroll(({
+            navbar: "bg-white shadow-sm",
+            fontColor: "text-black",
+            logoImage: "/images/logoipsum.png"
+        })));
+    }, [dispatch]);
 
     // Get Article by Id
     useEffect(() => {
@@ -37,10 +48,6 @@ const DetailArticleById = () => {
         };
         handlerDetailArticle();
     }, [articleId]);
-
-    useEffect(() => {
-        console.log("Detail article => ", detailArticle)
-    }, [detailArticle])
 
     // Get Other Article with a same categorys
     useEffect(() => {
@@ -58,12 +65,12 @@ const DetailArticleById = () => {
         };
     }, [articleParam, articleId]);
 
+
+
     return (
         <div className='flex flex-col'>
             {/* Header */}
-            <div className='relative w-full'>
-                <NavbarSecond />
-            </div>
+            <Navbar />
 
             <div className='px-40 py-10 mt-32'>
                 <div className='flex gap-4 justify-center'>
