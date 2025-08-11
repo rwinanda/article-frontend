@@ -4,7 +4,7 @@ import GridCard from '@/components/grid/GridCard'
 import SkeletonImage from '@/components/loading/loading-skeleton/SkeletonImage';
 import Navbar from '@/components/Navbar';
 import { setNavbarBgScroll } from '@/redux/features/navbar/navbarSlice';
-import { useAppDispatch, useAppSelector } from '@/redux/hook';
+import { useAppDispatch } from '@/redux/hook';
 import { GetAllArticleAPI, GetArticleByIdAPI } from '@/services/articleService';
 import { ArticleDetailResp } from '@/types/articleDetailTypes';
 import { ArticleQuery, ArticleResponse } from '@/types/articleTypes';
