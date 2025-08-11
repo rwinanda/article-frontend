@@ -20,7 +20,7 @@ const GridCard = ({ imageUrl, title, content, date, category, articleId }: props
     return (
         <Link
             href={`/article/${articleId}`}
-            className='flex flex-col cursor-pointer rounded-xl hover:border-1 hover:border-gray-100 gap-2 p-1'>
+            className='flex flex-col cursor-pointer rounded-xl hover:border-1 hover:border-gray-100 gap-2'>
             <div className='relative w-full h-60 '>{
                 !imageUrl ?
                     <Image
