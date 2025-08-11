@@ -17,17 +17,17 @@ const Navbar = () => {
     }, []);
 
     return (
-        <div className="z-50 w-full transition-all duration-300">
-            <nav className={`flex fixed w-full z-10 justify-between transition-all duration-100 ${navbarBgScroll.navbar}`}>
+        <div className="z-20 w-full transition-all duration-100">
+            <nav className={`flex fixed w-full justify-between transition-all duration-100 ${navbarBgScroll.navbar}`}>
                 <Link
                     href={"/"}
-                    className="my-9 ml-15">
+                    className="flex items-center my-8 ml-15">
                     <Image src={navbarBgScroll.logoImage} alt="header-bg" width='134' height='24' className="opacity-85 transition-all duration-100" />
                 </Link>
                 <div className="flex flex-col">
                     <button
                         type="button"
-                        className="flex items-center my-9 mr-15 cursor-pointer"
+                        className="flex items-center my-8 mr-15 cursor-pointer"
                         onClick={() => setOpenMenuProfile(true)}
                     >
                         <div className="w-8 h-8 mr-1.5 flex items-center justify-center bg-blue-200 rounded-full">
@@ -40,9 +40,9 @@ const Navbar = () => {
                         </p>
                     </button>
 
-                    <MenuProfile openMenuProfile={openMenuProfile} closeModal={() => setOpenMenuProfile(false)} />
                 </div>
             </nav>
+            <MenuProfile openMenuProfile={openMenuProfile} closeModal={() => setOpenMenuProfile(false)} />
         </div>
     )
 }
