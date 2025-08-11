@@ -22,7 +22,7 @@ const MenuProfile = ({ openMenuProfile, closeModal }: MenuProfileProps) => {
     }
     return (
         <div
-            className={`fixed inset-0 flex transition-colors ${openMenuProfile ? "visible bg-black/40" : "invisible"}`}
+            className={`fixed inset-0 z-50 flex transition-colors ${openMenuProfile ? "visible bg-black/40" : "invisible"}`}
             onClick={closeModal}
         >
             <div
