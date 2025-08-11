@@ -33,12 +33,12 @@ const ListArticle = ({ articleParam, setArticleParam }: ListArticleProps) => {
 
     return (
         <section id='work' className='w-full px-[12%] py-10'>
-            <p>Showing : {pageArticle} of {articleResponse.total} articles</p>
+            <p className="text-[16px]">Showing : {pageArticle} of {articleResponse.total} articles</p>
             {
                 articleResponse.data?.length === 0 ? (
                     <ArticleNotFound />
                 ) : (
-                    <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-12'>
+                    <ul className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6'>
                         {articleResponse.data?.map((data, index) => (
                             <GridCard imageUrl={data.imageUrl} title={data.title} content={data.content} date={data.updatedAt} category={data.category} key={index} articleId={data.id} />
                         ))}
