@@ -1,13 +1,5 @@
-// import { ArticlePayload } from "@/types/articleTypes"
 import PreviewImageComp from "../PreviewImageComp"
-// import { Dispatch, SetStateAction } from "react"
 import { useFormContext } from "react-hook-form"
-
-// interface ThumbnailsProps {
-//     setImageFile: (file: File | null) => void
-//     previewImage: ArticlePayload
-//     setPreviewImage: Dispatch<SetStateAction<ArticlePayload>>
-// }
 
 interface ThumbnailsProps {
     setImageFile: (file: File | null) => void
@@ -20,7 +12,6 @@ export default function Thumbnails({ setImageFile }: ThumbnailsProps) {
             <p>
                 Thumbnails
             </p>
-            {/* <PreviewImageComp setImageFile={setImageFile} previewImage={previewImage} setPreviewImage={setPreviewImage} /> */}
             <PreviewImageComp
                 setImageFile={setImageFile}
                 imageUrl={watch("imageUrl")}

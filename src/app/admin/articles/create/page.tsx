@@ -30,8 +30,6 @@ const CreateArticlePages = () => {
         cancel: false
     });
     const router = useRouter()
-    // const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms)); // Delay before redirect
-
 
     const methods = useForm<FormArticles>({
         resolver: zodResolver(SchemaArticle),

@@ -45,7 +45,6 @@ function Home() {
   // Navbar Effect
   useEffect(() => {
     const handleScroll = () => {
-      // console.log(`${window.scrollY}`)
       const scrollY = window.scrollY
       if (scrollY > 400) { // white navbar
         console.log("white")
