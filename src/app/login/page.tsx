@@ -11,7 +11,7 @@ import Link from "next/link";
 import { SchemaLogin } from "@/hooks/zoodForm/SchemaAuth";
 import { CheckCookies } from "@/hooks/CheckCookies";
 import ButtonLoading from "@/components/loading/ButtonLoading";
-import InputAreaAuth from "@/components/form/InputAreaAuth";
+import InputAreaAuth from "@/components/input-area/InputAreaAuth";
 
 const LoginPages = () => {
     const methods = useForm<LoginPayload>({
