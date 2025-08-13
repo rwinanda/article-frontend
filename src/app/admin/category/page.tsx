@@ -2,13 +2,13 @@
 
 import ContentPages from "@/components/admin-component/ContentPages";
 import PaginationAdmin from "@/components/admin-component/PaginationAdmin";
-// import Search from "@/components/admin-component/Search";
+import TableAdminCategory from "@/components/admin-component/table-admin/TableAdminCategory";
 import TitlePages from "@/components/admin-component/TitlePages";
 import TopContent from "@/components/admin-component/TopContent";
+import ButtonComponent from "@/components/Button";
 import SkeletonCategories from "@/components/loading/loading-skeleton/SkeletonCategories";
 import AlertModal from "@/components/popup/AlertModal";
 import FormModal from "@/components/popup/FormModal";
-import { HandlerDateFormat } from "@/hooks/HandlerDateFormat";
 import { DeleteCategoryAPI, GetAllCategoryAPI, PostCategoryAPI, UpdateCategoryAPI } from "@/services/categoryService";
 import { CategoryParam, CategoryPayload, CategoryResponse, UpdateCategoryPayload } from "@/types/categoryTypes";
 import { useEffect, useState } from "react";
@@ -100,12 +100,12 @@ const CategoryPage = () => {
                     </div>
 
                     <div className="flex ml-auto justify-center items-center bg-blue-600 hover:bg-blue-700 rounded-md">
-                        <button
+                        <ButtonComponent
+                            name="+ Add Category"
                             className="text-white py-2.5 px-4"
+                            type="button"
                             onClick={() => setOpenModalAdd(true)}
-                        >
-                            + Add Category
-                        </button>
+                        />
                     </div>
                 </div>
 
@@ -113,65 +113,13 @@ const CategoryPage = () => {
                 {loading ?
                     <SkeletonCategories />
                     :
-                    <div className="flex flex-col">
-                        {/* Header Table */}
-                        <div className="grid grid-cols-3 w-full items-center text-center bg-gray-100 py-3">
-                            {labelHeaders.map((title, index) => (
-                                <label key={index}>
-                                    {title}
-                                </label>
-                            ))}
-                        </div>
-
-                        {/* Data Table */}
-                        {categoryResp.data?.map((cat, index) => {
-                            const rawDate = cat.createdAt
-                            const newDate = HandlerDateFormat(rawDate)
-                            return (
-                                <div
-                                    key={index}
-                                    className="grid grid-cols-3 w-full items-center py-3 border-1 border-slate-200">
-                                    <a className="text-center">
-                                        {cat.name}
-                                    </a>
-                                    <a className="text-center">
-                                        {newDate}
-                                    </a>
-                                    <div className="flex justify-center">
-                                        <button
-                                            className="mx-3 text-blue-600 hover:scale-110 underline cursor-pointer"
-                                            onClick={async () => {
-                                                // console.log("Id => ", cat.id)
-                                                setCategoryUpdPay({ name: cat.name });
-                                                console.log("category update payload => ", categoryUpdPay)
-                                                setSelectedData(cat.id);
-                                                console.log("Selected data => ", selectedData)
-                                                setOpenModalEdit(true)
-                                            }}
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            className="text-red-500 hover:scale-110 underline cursor-pointer"
-                                            onClick={() => {
-                                                console.log("Id => ", cat.id)
-                                                setSelectedData(cat.id)
-                                                setOpenModalDel(true)
-                                            }}
-                                        >
-                                            Delete
-                                        </button>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                        <AlertModal nameModal="Delete Category" textModal="Delete category “Technology”? This will remove it from master data permanently." nameButton="Delete" openModal={openModalDel} closeModal={() => setOpenModalDel(false)} handler={() => deleteCategory(selectedData)} bgColor="bg-red-600 hover:bg-red-700" />
-
-                        <FormModal<CategoryPayload> nameModal="Add Category" nameInput="Category" openModal={openModalAdd} closeModal={() => setOpenModalAdd(false)} handlerButton={addCategory} nameButton="Add" placeholder="Input Category" data={categoryPayload} setData={setCategoryPayload} field="name" />
-
-                        <FormModal<UpdateCategoryPayload> nameModal="Edit Category" nameInput="Category" openModal={openModalEdit} closeModal={() => setOpenModalEdit(false)} handlerButton={editCategory} nameButton="Save Changes" placeholder="Update Category" data={categoryUpdPay} setData={setCategoryUpdPay} field="name" />
-                    </div>
+                    <TableAdminCategory labelHeaders={labelHeaders} categoryResp={categoryResp} setCategoryUpdPay={setCategoryUpdPay} setSelectedData={setSelectedData} setOpenModalEdit={setOpenModalEdit} setOpenModalDel={setOpenModalDel} />
                 }
+                <AlertModal nameModal="Delete Category" textModal="Delete category “Technology”? This will remove it from master data permanently." nameButton="Delete" openModal={openModalDel} closeModal={() => setOpenModalDel(false)} handler={() => deleteCategory(selectedData)} bgColor="bg-red-600 hover:bg-red-700" />
+
+                <FormModal<CategoryPayload> nameModal="Add Category" nameInput="Category" openModal={openModalAdd} closeModal={() => setOpenModalAdd(false)} handlerButton={addCategory} nameButton="Add" placeholder="Input Category" data={categoryPayload} setData={setCategoryPayload} field="name" />
+
+                <FormModal<UpdateCategoryPayload> nameModal="Edit Category" nameInput="Category" openModal={openModalEdit} closeModal={() => setOpenModalEdit(false)} handlerButton={editCategory} nameButton="Save Changes" placeholder="Update Category" data={categoryUpdPay} setData={setCategoryUpdPay} field="name" />
 
 
             </ContentPages>
