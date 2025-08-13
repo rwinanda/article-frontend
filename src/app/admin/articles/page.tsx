@@ -4,11 +4,12 @@ import AddNavigate from "@/components/AddNavigate"
 import ContentPages from "@/components/admin-component/ContentPages"
 import PaginationAdmin from "@/components/admin-component/PaginationAdmin"
 import Search from "@/components/admin-component/Search"
-import TableAdmin from "@/components/admin-component/TableAdmin";
+import TableAdminArticle from "@/components/admin-component/table-admin/TableAdminArticle";
 import TableNotFound from "@/components/admin-component/TableNotFound";
 import TitlePages from "@/components/admin-component/TitlePages"
 import TopContent from "@/components/admin-component/TopContent"
 import SkeletonArticle from "@/components/loading/loading-skeleton/SkeletonArticle";
+import AlertModal from "@/components/popup/AlertModal";
 import NotifAlert from "@/components/popup/notif/NotifAlert";
 import SelectCategory from "@/components/select/SelectCategory";
 import { DebounceSearch } from "@/hooks/DebounceSearch";
@@ -34,6 +35,8 @@ const ArticlePage = () => {
         skeleton: false
     });
     const [showNotif, setShowNotif] = useState(false);
+    const [selectedData, setSelectedData] = useState("");
+
 
     const refreshPage = async () => {
         const res = await GetAllArticleAPI(articleParam);
@@ -118,8 +121,9 @@ const ArticlePage = () => {
                 ) : articleResp.data?.length === 0 ? (
                     <TableNotFound />
                 ) :
-                    <TableAdmin articleResp={articleResp} deleteArticle={deleteArticle} openModalDel={openModalDel} setOpenModalDel={setOpenModalDel} />
+                    <TableAdminArticle articleResp={articleResp} setOpenModalDel={setOpenModalDel} setSelectedData={setSelectedData} />
                 }
+                <AlertModal nameModal="Delete Articles" textModal="Deleting this article is permanent and cannot be undone. All related content will be removed." nameButton="Delete" openModal={openModalDel} closeModal={() => setOpenModalDel(false)} handler={() => deleteArticle(selectedData)} bgColor="bg-red-600 hover:bg-red-700" />
 
                 <PaginationAdmin currentPage={articleResp.page} totalData={articleResp.total} limitData={articleResp.limit} onPageChange={onPageArticleChange} />
             </ContentPages>
