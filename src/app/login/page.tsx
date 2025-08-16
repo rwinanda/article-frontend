@@ -10,8 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { SchemaLogin } from "@/hooks/zoodForm/SchemaAuth";
 import { CheckCookies } from "@/hooks/CheckCookies";
-import ButtonLoading from "@/components/loading/ButtonLoading";
-import InputAreaAuth from "@/components/input-area/InputAreaAuth";
+import InputAreaForm from "@/components/input-area/InputAreaForm";
+import ButtonPrimary from "@/components/button/ButtonPrimary";
 
 const LoginPages = () => {
     const methods = useForm<LoginPayload>({
@@ -65,7 +65,7 @@ const LoginPages = () => {
                                     <p>
                                         Username
                                     </p>
-                                    <InputAreaAuth field="username" type="text" placeholder="Input Username" failedLogin={failedLogin} />
+                                    <InputAreaForm field="username" type="text" placeholder="Input Username" failedLogin={failedLogin} />
                                 </div>
 
                                 {/* Password */}
@@ -73,19 +73,13 @@ const LoginPages = () => {
                                     <p>
                                         Password
                                     </p>
-                                    <InputAreaAuth field="password" type="password" placeholder="Input Password" failedLogin={failedLogin} />
+                                    <InputAreaForm field="password" type="password" placeholder="Input Password" failedLogin={failedLogin} textFailed="Username or Password are Incorect" flag="loginPage" />
                                 </div>
 
-                                {/* Button */}
-                                <button
-                                    className="bg-[#2563EB] hover:bg-[#195be9] flex items-center justify-center mt-4 py-2 rounded-sm w-full font-semibold text-white hover:text-gray-100 cursor-pointer transition-transform duration-300"
-                                    type="submit"
-                                >
-                                    {loading ? <ButtonLoading /> : "LOG IN"}
-                                </button>
+                                <ButtonPrimary text="LOG IN" type="submit" loading={loading} marginTop="mt-4"/>
                             </div>
 
-                            {/* Register */}
+                            {/* Login */}
                             <div className="flex mt-4 items-center justify-center">
                                 <p
                                     className="text-[#475569]">
