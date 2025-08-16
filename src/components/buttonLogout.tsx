@@ -31,7 +31,7 @@ export const ButtonLogout = () => {
             </button>
 
             {/* Modal */}
-            <AlertModal nameModal="Logout" textModal="Are you sure you want to logout?" nameButton="Logout" openModal={openModal} closeModal={() => setOpenModal(false)} handler={LogoutHandler} bgColor="bg-blue-600 hover:bg-blue-700"/>
+            <AlertModal nameModal="Logout" textModal="Are you sure you want to logout?" nameButton="Logout" openModal={openModal} closeModal={() => setOpenModal(false)} handler={LogoutHandler} flag="logout"/>
         </div>
 
     )
