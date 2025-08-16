@@ -1,3 +1,7 @@
+import ButtonPrimary from "../button/ButtonPrimary"
+import ButtonRed from "../button/ButtonRed"
+import ButtonWhite from "../button/ButtonWhite"
+
 interface props {
     nameModal: string
     textModal: string
@@ -5,10 +9,10 @@ interface props {
     openModal: boolean
     closeModal: () => void
     handler: () => void
-    bgColor: string
+    flag?: string
 }
 
-const AlertModal = ({nameModal, textModal, nameButton, openModal, closeModal, handler, bgColor}: props) => {
+const AlertModal = ({ nameModal, textModal, nameButton, openModal, closeModal, handler, flag }: props) => {
     return (
         // Backdrop
         <div
@@ -31,13 +35,15 @@ const AlertModal = ({nameModal, textModal, nameButton, openModal, closeModal, ha
                 </p>
 
                 {/* Button Confirmation */}
-                <div className="ml-auto mt-4">
-                    <button className="px-4 py-2 border-2 border-slate-200 hover:border-slate-300 hover:bg-slate-50 cursor-pointer font-medium rounded-lg" onClick={closeModal}>
-                        Cancel
-                    </button>
-                    <button className={`${bgColor} px-4 py-2 ml-2 cursor-pointer text-white font-medium rounded-lg`} onClick={handler}>
-                        {nameButton}
-                    </button>
+                <div className="flex ml-auto mt-4 gap-2">
+                    <ButtonWhite text="Cancel" type="button" onClick={closeModal} />
+                    {
+                        flag === "logout"
+                            ?
+                            <ButtonPrimary text={nameButton} type="submit" onClick={handler} sizeBtn="px-4" />
+                            :
+                            <ButtonRed text={nameButton} type="submit" onClick={handler} />
+                    }
                 </div>
             </div>
         </div>
