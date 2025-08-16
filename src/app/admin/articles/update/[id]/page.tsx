@@ -37,7 +37,7 @@ const UpdateArticlePages = () => {
             title: "",
             content: "",
             categoryId: "",
-            imageUrl: null,
+            imageUrl: "",
         },
     });
     const { handleSubmit, reset } = methods;
@@ -122,7 +122,7 @@ const UpdateArticlePages = () => {
                                 <Thumbnails setImageFile={setImageFile} />
 
                                 {/* Title */}
-                                <TitleForm field="title" />
+                                <TitleForm />
 
                                 {/* Category */}
                                 <CategoryForm categoryResp={categoryResp} />
