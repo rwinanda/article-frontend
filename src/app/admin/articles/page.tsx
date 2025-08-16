@@ -123,7 +123,7 @@ const ArticlePage = () => {
                 ) :
                     <TableAdminArticle articleResp={articleResp} setOpenModalDel={setOpenModalDel} setSelectedData={setSelectedData} />
                 }
-                <AlertModal nameModal="Delete Articles" textModal="Deleting this article is permanent and cannot be undone. All related content will be removed." nameButton="Delete" openModal={openModalDel} closeModal={() => setOpenModalDel(false)} handler={() => deleteArticle(selectedData)} bgColor="bg-red-600 hover:bg-red-700" />
+                <AlertModal nameModal="Delete Articles" textModal="Deleting this article is permanent and cannot be undone. All related content will be removed." nameButton="Delete" openModal={openModalDel} closeModal={() => setOpenModalDel(false)} handler={() => deleteArticle(selectedData)} />
 
                 <PaginationAdmin currentPage={articleResp.page} totalData={articleResp.total} limitData={articleResp.limit} onPageChange={onPageArticleChange} />
             </ContentPages>
