@@ -8,7 +8,6 @@ import React, {
 import Link from "next/link";
 import { ButtonLogout } from "@/components/buttonLogout";
 import { usePathname, useRouter } from "next/navigation";
-import { CheckCookies } from "@/hooks/CheckCookies";
 import { withAuth } from "@/utils/withAuth";
 
 interface AdminLayoutProps {
