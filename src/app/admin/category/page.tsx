@@ -5,7 +5,7 @@ import PaginationAdmin from "@/components/admin-component/PaginationAdmin";
 import TableAdminCategory from "@/components/admin-component/table-admin/TableAdminCategory";
 import TitlePages from "@/components/admin-component/TitlePages";
 import TopContent from "@/components/admin-component/TopContent";
-import ButtonComponent from "@/components/Button";
+import ButtonPrimary from "@/components/button/ButtonPrimary";
 import SkeletonCategories from "@/components/loading/loading-skeleton/SkeletonCategories";
 import AlertModal from "@/components/popup/AlertModal";
 import FormModal from "@/components/popup/FormModal";
@@ -19,7 +19,10 @@ const CategoryPage = () => {
     const [openModalAdd, setOpenModalAdd] = useState(false);
     const [openModalEdit, setOpenModalEdit] = useState(false);
     // State for delete selected data
-    const [selectedData, setSelectedData] = useState("");
+    const [selectedData, setSelectedData] = useState({
+        id: "",
+        name: ""
+    });
     const [loading, setLoading] = useState(false);
     const [categoryResp, SetCategoryResp] = useState<CategoryResponse>({} as CategoryResponse)
     const [categoryParam, setCategoryParam] = useState<CategoryParam>({
@@ -95,18 +98,7 @@ const CategoryPage = () => {
                 <TopContent text={`Total Category: ${categoryResp.totalData}`} />
 
                 <div className="flex p-6 border-b-1 border-slate-200">
-                    <div className="flex">
-                        {/* <Search width="" placeholder="Search category" /> */}
-                    </div>
-
-                    <div className="flex ml-auto justify-center items-center bg-blue-600 hover:bg-blue-700 rounded-md">
-                        <ButtonComponent
-                            name="+ Add Category"
-                            className="text-white py-2.5 px-4"
-                            type="button"
-                            onClick={() => setOpenModalAdd(true)}
-                        />
-                    </div>
+                    <ButtonPrimary text="+ Add Category" type="button" marginTop="ml-auto" sizeBtn="px-4" onClick={() => setOpenModalAdd(true)} />
                 </div>
 
                 {/* Table Article */}
@@ -115,12 +107,11 @@ const CategoryPage = () => {
                     :
                     <TableAdminCategory labelHeaders={labelHeaders} categoryResp={categoryResp} setCategoryUpdPay={setCategoryUpdPay} setSelectedData={setSelectedData} setOpenModalEdit={setOpenModalEdit} setOpenModalDel={setOpenModalDel} />
                 }
-                <AlertModal nameModal="Delete Category" textModal="Delete category “Technology”? This will remove it from master data permanently." nameButton="Delete" openModal={openModalDel} closeModal={() => setOpenModalDel(false)} handler={() => deleteCategory(selectedData)} bgColor="bg-red-600 hover:bg-red-700" />
+                <AlertModal nameModal="Delete Category" textModal={`Delete category “${selectedData.name}”? This will remove it from master data permanently.`} nameButton="Delete" openModal={openModalDel} closeModal={() => setOpenModalDel(false)} handler={() => deleteCategory(selectedData.id)} />
 
                 <FormModal<CategoryPayload> nameModal="Add Category" nameInput="Category" openModal={openModalAdd} closeModal={() => setOpenModalAdd(false)} handlerButton={addCategory} nameButton="Add" placeholder="Input Category" data={categoryPayload} setData={setCategoryPayload} field="name" />
 
                 <FormModal<UpdateCategoryPayload> nameModal="Edit Category" nameInput="Category" openModal={openModalEdit} closeModal={() => setOpenModalEdit(false)} handlerButton={editCategory} nameButton="Save Changes" placeholder="Update Category" data={categoryUpdPay} setData={setCategoryUpdPay} field="name" />
-
 
             </ContentPages>
             <PaginationAdmin currentPage={categoryParam.page} totalData={categoryResp.totalData} limitData={categoryParam.limit} onPageChange={onPageChange} />
