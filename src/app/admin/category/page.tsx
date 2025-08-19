@@ -81,7 +81,7 @@ const CategoryPage = () => {
 
     const editCategory = async () => {
         try {
-            await UpdateCategoryAPI(categoryUpdPay, selectedData);
+            await UpdateCategoryAPI(categoryUpdPay, selectedData.id);
             await refreshPage();
             setOpenModalEdit(false);
         } catch (error) {
