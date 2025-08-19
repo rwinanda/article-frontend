@@ -29,12 +29,13 @@ const SelectCategoryAdmin = ({ categoryArray }: props) => {
                     </option>
                 ))}
             </select>
+
             {/* 🛑 Error Display */}
-            {errors.categoryId && (
+            {errors.categoryId ? (
                 <p className="text-red-500 text-sm">
                     {(errors.categoryId.message as string) || "Category is required"}
                 </p>
-            )}
+            ) : null}
         </div>
     )
 }
