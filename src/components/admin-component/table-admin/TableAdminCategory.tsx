@@ -1,7 +1,7 @@
 import { HandlerDateFormat } from "@/hooks/HandlerDateFormat"
 import { CategoryResponse, UpdateCategoryPayload } from "@/types/categoryTypes"
 import HeaderTable from "./HeaderTable"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction } from "react"
 
 interface props {
     labelHeaders: string[]
@@ -13,10 +13,9 @@ interface props {
     }>>
     setOpenModalEdit: Dispatch<SetStateAction<boolean>>
     setOpenModalDel: Dispatch<SetStateAction<boolean>>
-    setCategoryName?: Dispatch<SetStateAction<string>>
 }
 
-const TableAdminCategory = ({ labelHeaders, categoryResp, setCategoryUpdPay, setSelectedData, setOpenModalEdit, setOpenModalDel, setCategoryName }: props) => {
+const TableAdminCategory = ({ labelHeaders, categoryResp, setCategoryUpdPay, setSelectedData, setOpenModalEdit, setOpenModalDel }: props) => {
 
     return (
         <div className="flex flex-col">
@@ -28,10 +27,6 @@ const TableAdminCategory = ({ labelHeaders, categoryResp, setCategoryUpdPay, set
                 const rawDate = cat.createdAt
                 const newDate = HandlerDateFormat(rawDate)
 
-                // Set Category Name
-                if (setCategoryName) {
-                    setCategoryName(cat.name)
-                }
                 return (
                     <div
                         key={index}
