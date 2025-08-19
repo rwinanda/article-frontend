@@ -1,4 +1,6 @@
 import { Dispatch, SetStateAction } from "react"
+import ButtonWhite from "../button/ButtonWhite"
+import ButtonPrimary from "../button/ButtonPrimary"
 
 interface props<T> {
     nameModal: string
@@ -13,12 +15,21 @@ interface props<T> {
     field: keyof T;
 }
 
-const FormModal = <T,>({ nameModal, nameInput, openModal, closeModal, handlerButton, nameButton, placeholder, data, setData, field }: props<T>) => {
+const FormModal = <T,>({
+    nameModal,
+    nameInput,
+    openModal,
+    closeModal,
+    handlerButton,
+    nameButton,
+    placeholder,
+    data,
+    setData,
+    field
+}: props<T>) => {
     return (
-
         <div
-            className={`fixed inset-0 flex justify-center items-center transition-colors 
-        ${openModal ? "visible bg-black/40" : "invisible"}`}
+            className={`fixed inset-0 flex justify-center items-center transition-colors ${openModal ? "visible bg-black/40" : "invisible"}`}
             onClick={closeModal}
         >
             {/* Modal */}
@@ -58,13 +69,9 @@ const FormModal = <T,>({ nameModal, nameInput, openModal, closeModal, handlerBut
                 </div>
 
                 {/* Button Confirmation */}
-                <div className="ml-auto mt-4">
-                    <button className="px-4 py-2 border-2 border-slate-200 hover:border-slate-300 hover:bg-slate-50 cursor-pointer font-medium rounded-lg" onClick={closeModal}>
-                        Cancel
-                    </button>
-                    <button className={`bg-blue-600 hover:bg-blue-700 px-4 py-2 ml-2 cursor-pointer text-white font-medium rounded-lg`} onClick={handlerButton}>
-                        {nameButton}
-                    </button>
+                <div className="flex gap-2 ml-auto mt-4">
+                    <ButtonWhite text="Cancel" type="button" onClick={closeModal}/>
+                    <ButtonPrimary text={nameButton} type="submit" onClick={handlerButton} sizeBtn="px-4" />
                 </div>
             </div>
         </div>
