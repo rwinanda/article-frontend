@@ -7,7 +7,9 @@ import TitleForm from "@/components/admin-component/admin-article/TitleForm";
 import ContentPages from "@/components/admin-component/ContentPages";
 import RteEditor from "@/components/admin-component/RteEditor";
 import TitlePages from "@/components/admin-component/TitlePages";
-import ButtonComponent from "@/components/Button";
+import ButtonPrimary from "@/components/button/ButtonPrimary";
+import ButtonSlate from "@/components/button/ButtonSlate";
+import ButtonWhite from "@/components/button/ButtonWhite";
 import NotifAlert from "@/components/popup/notif/NotifAlert";
 import { FormArticles, SchemaArticle } from "@/hooks/zoodForm/SchemaArticle";
 import { CreateArticleAPI } from "@/services/articleService";
@@ -113,7 +115,7 @@ const CreateArticlePages = () => {
                                 <Thumbnails setImageFile={setImageFile} />
 
                                 {/* Title */}
-                                <TitleForm field="title" />
+                                <TitleForm />
 
                                 {/* Category */}
                                 <CategoryForm categoryResp={categoryResp} />
@@ -124,10 +126,10 @@ const CreateArticlePages = () => {
                         </div>
 
                         {/* Bottom Content */}
-                        <div className="flex py-4 justify-end px-6">
-                            <ButtonComponent type="button" className="border-1 border-slate-200 hover:bg-slate-100 px-4 py-2.5 rounded-md cursor-pointer" name="Cancel" loading={loading.cancel} />
-                            <ButtonComponent type="button" className="bg-slate-200 hover:bg-slate-300 mx-2 px-4 py-2.5 rounded-md cursor-pointer" name="Preview" loading={loading.preview} />
-                            <ButtonComponent type="submit" className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2.5 rounded-md cursor-pointer" name="Upload" loading={loading.upload} />
+                        <div className="flex py-4 gap-2 justify-end px-6">
+                            <ButtonWhite type="button" text="Cancel" loading={loading.cancel} />
+                            <ButtonSlate type="button" text="Preview" loading={loading.preview} />
+                            <ButtonPrimary type="submit" text="Upload" loading={loading.upload} sizeBtn="px-4" />
                         </div>
                     </form>
                 </FormProvider>
