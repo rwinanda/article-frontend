@@ -10,6 +10,8 @@ import TitlePages from "@/components/admin-component/TitlePages";
 import ButtonPrimary from "@/components/button/ButtonPrimary";
 import ButtonSlate from "@/components/button/ButtonSlate";
 import ButtonWhite from "@/components/button/ButtonWhite";
+import AlertModal from "@/components/modal/AlertModal";
+import PreviewModal from "@/components/modal/PreviewModal";
 import NotifAlert from "@/components/popup/notif/NotifAlert";
 import { FormArticles, SchemaArticle } from "@/hooks/zoodForm/SchemaArticle";
 import { CreateArticleAPI } from "@/services/articleService";
@@ -31,7 +33,11 @@ const CreateArticlePages = () => {
         preview: false,
         cancel: false
     });
-    const router = useRouter()
+    const router = useRouter();
+    const [previewArticle, setPreviewArticle] = useState<FormArticles | null>(null)
+    const [showPreview, setShowPreview] = useState(false);
+    const [cancelPage, setCancelPage] = useState(false);
+    const [categoryName, setCategoryName] = useState("");
 
     const methods = useForm<FormArticles>({
         resolver: zodResolver(SchemaArticle),
@@ -57,6 +63,10 @@ const CreateArticlePages = () => {
 
         fetchData()
     }, []);
+
+    const HandlerCancelPage = () => {
+        router.push("/admin/articles")
+    }
 
     // Handler Upload Article to API
     const HandlerAddArticle = async (data: ArticlePayload) => {
@@ -111,14 +121,9 @@ const CreateArticlePages = () => {
                         <div className="flex flex-col px-6 py-6">
                             {/* Top Form Content */}
                             <div className="flex flex-col w-full">
-                                {/* Thumbnails */}
                                 <Thumbnails setImageFile={setImageFile} />
-
-                                {/* Title */}
                                 <TitleForm />
-
-                                {/* Category */}
-                                <CategoryForm categoryResp={categoryResp} />
+                                <CategoryForm categoryResp={categoryResp} setCategoryName={setCategoryName} />
                             </div>
 
                             {/* Text Editor */}
@@ -127,12 +132,31 @@ const CreateArticlePages = () => {
 
                         {/* Bottom Content */}
                         <div className="flex py-4 gap-2 justify-end px-6">
-                            <ButtonWhite type="button" text="Cancel" loading={loading.cancel} />
-                            <ButtonSlate type="button" text="Preview" loading={loading.preview} />
+                            <ButtonWhite type="button" text="Cancel" loading={loading.cancel}
+                                onClick={() => setCancelPage(true)}
+                            />
+                            <ButtonSlate type="button" text="Preview" loading={loading.preview}
+                                onClick={() => {
+                                    const data = methods.getValues()
+                                    if (!ImageFile) {
+                                        alert("Please select an Image")
+                                        return;
+                                    }
+                                    setPreviewArticle({ ...data, imageUrl: URL.createObjectURL(ImageFile) })
+                                    setShowPreview(true);
+                                }}
+                            />
                             <ButtonPrimary type="submit" text="Upload" loading={loading.upload} sizeBtn="px-4" />
                         </div>
                     </form>
                 </FormProvider>
+                <PreviewModal
+                    open={showPreview}
+                    closeModal={() => setShowPreview(false)}
+                    data={previewArticle}
+                    category={categoryName}
+                />
+                <AlertModal nameModal="Cancel Page" textModal="Are you sure you want to cancel your changes? Any unsaved data will be lost." nameButton="Ok" openModal={cancelPage} closeModal={() => setCancelPage(false)} handler={HandlerCancelPage} />
 
             </ContentPages>
         </div >
