@@ -4,16 +4,17 @@ import { CategoryResponse } from "@/types/categoryTypes";
 
 interface CategoryFormProps {
     categoryResp: CategoryResponse
+    setCategoryName: (data: string) => void
 }
 
-export default function CategoryForm({ categoryResp }: CategoryFormProps) {
+export default function CategoryForm({ categoryResp, setCategoryName }: CategoryFormProps) {
     return (
         <div className="flex flex-col mt-4">
             <p className="font-medium">
                 Category
             </p>
             <SelectCategory
-                categoryArray={categoryResp} />
+                categoryArray={categoryResp} setCategoryName={setCategoryName}/>
         </div>
     )
 }
