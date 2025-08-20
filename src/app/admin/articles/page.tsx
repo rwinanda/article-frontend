@@ -9,7 +9,7 @@ import TableNotFound from "@/components/admin-component/TableNotFound";
 import TitlePages from "@/components/admin-component/TitlePages"
 import TopContent from "@/components/admin-component/TopContent"
 import SkeletonArticle from "@/components/loading/loading-skeleton/SkeletonArticle";
-import AlertModal from "@/components/popup/AlertModal";
+import AlertModal from "@/components/modal/AlertModal";
 import NotifAlert from "@/components/popup/notif/NotifAlert";
 import SelectCategory from "@/components/select/SelectCategory";
 import { DebounceSearch } from "@/hooks/DebounceSearch";

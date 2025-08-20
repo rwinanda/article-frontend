@@ -18,7 +18,7 @@ const TableAdminArticle = ({ articleResp, setOpenModalDel, setSelectedData }: pr
         <div className="flex flex-col">
             {/* Header Table */}
             <HeaderTable labelHeaders={labelHeaders} />
-
+            
             {/* Data Table */}
             {articleResp.data?.map((article, index) => {
                 const rawDate = article?.updatedAt;

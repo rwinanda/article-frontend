@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import AlertModal from "./popup/AlertModal";
+import AlertModal from "./modal/AlertModal";
 
 
 export const ButtonLogout = () => {
