@@ -3,10 +3,11 @@ import { useFormContext } from "react-hook-form"
 
 interface props {
     categoryArray: CategoryResponse
+    setCategoryName: (data: string) => void
 }
 
 
-const SelectCategoryAdmin = ({ categoryArray }: props) => {
+const SelectCategoryAdmin = ({ categoryArray, setCategoryName }: props) => {
     const { setValue, watch, formState: { errors } } = useFormContext();
     const selectedCategoryId = watch("categoryId");
 
@@ -18,6 +19,12 @@ const SelectCategoryAdmin = ({ categoryArray }: props) => {
                 onChange={(e) => {
                     const value = e.target.value;
                     setValue("categoryId", value); // ⬅️ Update ke form RHF
+
+                    // Get category name to display on preview
+                    const selectedCategory = categoryArray.data.find(cat => cat.id === value)
+                    if (selectedCategory) {
+                        setCategoryName(selectedCategory.name)
+                    }
                 }}
             >
                 <option value="" disabled hidden>
