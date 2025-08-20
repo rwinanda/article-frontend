@@ -12,7 +12,9 @@ export const GetAllArticleAPI = async (articleParam: ArticleQuery): Promise<Arti
             page: articleParam.page.toString(),
             limit: articleParam.limit.toString(),
             title: articleParam.title.toString(),
-            category: articleParam?.category?.toString()
+            category: articleParam?.category?.toString(),
+            sortBy: "createdAt",
+            sortOrder: "desc"
         }).toString();
         const res = await baseURL.get(`/articles?${articleQuery}`, {
             signal: controller.signal
