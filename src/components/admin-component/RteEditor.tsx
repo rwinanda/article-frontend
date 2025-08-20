@@ -3,7 +3,6 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
-// import Placeholder from '@tiptap/extension-placeholder';
 import { TextAlign } from '@tiptap/extension-text-align'
 import { AlignLeft, AlignCenter, AlignRight, AlignJustify } from 'lucide-react';
 
@@ -11,19 +10,11 @@ import {
     FaBold,
     FaItalic
 } from "react-icons/fa";
-// import { Dispatch, SetStateAction, useEffect } from "react";
-// import { ArticlePayload } from "@/types/articleTypes";
 import { useFormContext } from "react-hook-form";
 import { useEffect } from "react";
 
-// interface Props {
-//     articleForm: ArticlePayload
-//     setArticleForm: Dispatch<SetStateAction<ArticlePayload>>
-// }
 
-const RteEditor = (
-    // { articleForm, setArticleForm }: Props
-) => {
+const RteEditor = () => {
     const { setValue, watch } = useFormContext();
     const content = watch("content");
     const editor = useEditor({
@@ -37,9 +28,6 @@ const RteEditor = (
             }),
             Underline,
             TextAlign.configure({ types: ['heading', 'paragraph'] })
-            // Placeholder.configure({
-            //     placeholder: 'Type a content...',
-            // })
         ],
         content: content || "",
         editorProps: {
@@ -52,11 +40,6 @@ const RteEditor = (
         onUpdate: ({ editor }) => {
             const data = editor.getHTML();
             setValue("content", data);
-
-            // setArticleForm((prev) => ({
-            //     ...prev,
-            //     content: data
-            // }));
         },
     });
 
@@ -70,12 +53,6 @@ const RteEditor = (
     if (!editor) {
         return null;
     }
-
-    // useEffect(() => {
-    //     if (editor && articleForm.content) {
-    //         editor.commands.setContent(articleForm.content);
-    //     }
-    // }, [editor, articleForm.content]);
 
     return (
         <>
@@ -130,12 +107,6 @@ const RteEditor = (
                         </div>
                     </div>
                     <EditorContent editor={editor} className="border-t-1 border-slate-200 p-2" />
-                    {/* <button
-                        onClick={saveContent}
-                        className="mt-2 p-2 bg-blue-500 text-white rounded"
-                    >
-                        Save
-                    </button> */}
                 </div>
             </div>
         </>
