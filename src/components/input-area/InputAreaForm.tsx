@@ -41,6 +41,10 @@ const InputAreaForm = ({
                             {textFailed}
                         </p> : null
                 )
+                ||
+                (
+                    errors?.title && <p className="text-red-500">{(errors[field]?.message as string)}</p>
+                )
             }
         </div>
     )
