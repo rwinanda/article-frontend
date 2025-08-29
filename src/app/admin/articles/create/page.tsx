@@ -27,7 +27,10 @@ import { FormProvider, useForm } from "react-hook-form";
 const CreateArticlePages = () => {
     const [ImageFile, setImageFile] = useState<(File | null)>(null);
     const [categoryResp, SetCategoryResp] = useState<CategoryResponse>({} as CategoryResponse);
-    const [notifError, setNotifError] = useState(false);
+    const [notifError, setNotifError] = useState({
+        errorCreate: false,
+        imageEmpty: false
+    });
     const [loading, setLoading] = useState({
         upload: false,
         preview: false,
@@ -68,6 +71,29 @@ const CreateArticlePages = () => {
         router.push("/admin/articles")
     }
 
+    const HandlerPreviewPage = () => {
+        const data = methods.getValues()
+
+        // Condition when no image file
+        if (!ImageFile && !data.imageUrl) {
+            setNotifError((prev) => ({
+                ...prev,
+                imageEmpty: false
+            }))
+            setTimeout(() => setNotifError((prev) => ({
+                ...prev,
+                imageEmpty: true
+            })), 10);
+            return;
+        }
+
+        setPreviewArticle({
+            ...data,
+            imageUrl: ImageFile ? URL.createObjectURL(ImageFile) : data.imageUrl,
+        });
+        setShowPreview(true);
+    }
+
     // Handler Upload Article to API
     const HandlerAddArticle = async (data: ArticlePayload) => {
         if (!ImageFile) {
@@ -87,7 +113,8 @@ const CreateArticlePages = () => {
                 ...data,
                 imageUrl: uploadRes.imageUrl
             }
-            await CreateArticleAPI(payload);
+            const res = await CreateArticleAPI(payload);
+            console.log("respon => ", res)
             router.push(`/admin/articles`);
             setLoading((prev) => ({
                 ...prev,
@@ -95,13 +122,17 @@ const CreateArticlePages = () => {
             }));
         } catch (error) {
             console.error(error);
-            setNotifError(true);
+            setNotifError((prev) => ({
+                ...prev,
+                errorCreate: true
+            }));
         }
     }
 
     return (
         <div>
-            <NotifAlert showNotif={notifError} messageTitle="Error" messageDetail="Something went wrong" />
+            <NotifAlert showNotif={notifError.errorCreate} messageTitle="Error" messageDetail="Something went wrong" />
+            <NotifAlert showNotif={notifError.imageEmpty} messageTitle="Error" messageDetail="Please select an image" />
             <TitlePages title="Articles" />
 
             {/* Content */}
@@ -136,15 +167,9 @@ const CreateArticlePages = () => {
                                 onClick={() => setCancelPage(true)}
                             />
                             <ButtonSlate type="button" text="Preview" loading={loading.preview}
-                                onClick={() => {
-                                    const data = methods.getValues()
-                                    if (!ImageFile) {
-                                        alert("Please select an Image")
-                                        return;
-                                    }
-                                    setPreviewArticle({ ...data, imageUrl: URL.createObjectURL(ImageFile) })
-                                    setShowPreview(true);
-                                }}
+                                onClick={() =>
+                                    HandlerPreviewPage()
+                                }
                             />
                             <ButtonPrimary type="submit" text="Upload" loading={loading.upload} sizeBtn="px-4" />
                         </div>
@@ -157,7 +182,6 @@ const CreateArticlePages = () => {
                     category={categoryName}
                 />
                 <AlertModal nameModal="Cancel Page" textModal="Are you sure you want to cancel your changes? Any unsaved data will be lost." nameButton="Ok" openModal={cancelPage} closeModal={() => setCancelPage(false)} handler={HandlerCancelPage} />
-
             </ContentPages>
         </div >
     )
