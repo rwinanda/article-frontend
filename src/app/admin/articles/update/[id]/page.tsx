@@ -6,7 +6,6 @@ import Thumbnails from "@/components/admin-component/admin-article/Thumbnails";
 import TitleForm from "@/components/admin-component/admin-article/TitleForm";
 import ContentPages from "@/components/admin-component/ContentPages";
 import RteEditor from "@/components/admin-component/RteEditor";
-import ButtonComponent from "@/components/Button";
 import { GetArticleByIdAPI, UpdateArticleAPI } from "@/services/articleService";
 import { GetAllCategoryAPI } from "@/services/categoryService";
 import { UploadAPI } from "@/services/uploadService";
@@ -17,6 +16,12 @@ import { ArticlePayload } from "@/types/articleTypes";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormArticles, SchemaArticle } from "@/hooks/zoodForm/SchemaArticle";
 import { zodResolver } from "@hookform/resolvers/zod";
+import ButtonWhite from "@/components/button/ButtonWhite";
+import ButtonSlate from "@/components/button/ButtonSlate";
+import ButtonPrimary from "@/components/button/ButtonPrimary";
+import NotifAlert from "@/components/popup/notif/NotifAlert";
+import PreviewModal from "@/components/modal/PreviewModal";
+import AlertModal from "@/components/modal/AlertModal";
 
 
 const UpdateArticlePages = () => {
@@ -29,6 +34,15 @@ const UpdateArticlePages = () => {
         preview: false,
         cancel: false
     });
+    const [notifError, setNotifError] = useState({
+        errorCreate: false,
+        imageEmpty: false
+    });
+    const [previewArticle, setPreviewArticle] = useState<FormArticles | null>(null)
+    const [showPreview, setShowPreview] = useState(false);
+    const [cancelPage, setCancelPage] = useState(false);
+    const [categoryName, setCategoryName] = useState("");
+
     const router = useRouter();
 
     const methods = useForm<FormArticles>({
@@ -65,24 +79,48 @@ const UpdateArticlePages = () => {
         if (articleId) fetchData();
     }, [articleId, reset]);
 
+    const HandlerPreviewPage = () => {
+        const data = methods.getValues()
+
+        // Condition when no image file
+        if (!ImageFile && !data.imageUrl) {
+            setNotifError((prev) => ({
+                ...prev,
+                imageEmpty: false
+            }))
+            setTimeout(() => setNotifError((prev) => ({
+                ...prev,
+                imageEmpty: true
+            })), 10);
+            return;
+        }
+
+        setPreviewArticle({
+            ...data,
+            imageUrl: ImageFile ? URL.createObjectURL(ImageFile) : data.imageUrl,
+        });
+        setShowPreview(true);
+    }
+
+    const HandlerCancelPage = () => {
+        router.push("/admin/articles")
+    }
+
     const HandlerUpdate = async (data: ArticlePayload) => {
         let imageUrl = data.imageUrl
 
-        if (!ImageFile) {
-            return alert("Please select an image");
-        }
         try {
             setLoading((prev) => ({
                 ...prev,
                 upload: true
             }));
 
-            // 1. Upload pictures using Form Data
-            const formData = new FormData();
-            formData.append("image", ImageFile);
-
-            const uploadRes = await UploadAPI(formData);
-            imageUrl = uploadRes.imageUrl;
+            if (ImageFile) {
+                const formData = new FormData();
+                formData.append("image", ImageFile);
+                const uploadRes = await UploadAPI(formData);
+                imageUrl = uploadRes.imageUrl;
+            }
 
             // 2. Upload article using JSON
             const updatePayload: ArticlePayload = {
@@ -91,28 +129,32 @@ const UpdateArticlePages = () => {
             }
             await UpdateArticleAPI(updatePayload, articleId);
             router.push('/admin/articles')
+        } catch (error) {
+            console.error(error);
+            alert("Failed to update article");
+        } finally {
             setLoading((prev) => ({
                 ...prev,
                 upload: false
             }));
-        } catch (error) {
-            console.error(error);
-            alert("Failed to update article");
         }
     }
 
+
     return (
         <div>
-            <FormProvider {...methods}>
-                <form
-                    onSubmit={handleSubmit(HandlerUpdate)}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            e.preventDefault();
-                        }
-                    }}
-                >
-                    <ContentPages>
+            <NotifAlert showNotif={notifError.errorCreate} messageTitle="Error" messageDetail="Something went wrong" />
+            <NotifAlert showNotif={notifError.imageEmpty} messageTitle="Error" messageDetail="Please select an image" />
+            <ContentPages>
+                <FormProvider {...methods}>
+                    <form
+                        onSubmit={handleSubmit(HandlerUpdate)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                e.preventDefault();
+                            }
+                        }}
+                    >
                         <ArticleTopContent titleContent="Update Article" />
 
                         <div className="flex flex-col px-6 py-6">
@@ -125,20 +167,33 @@ const UpdateArticlePages = () => {
                                 <TitleForm />
 
                                 {/* Category */}
-                                <CategoryForm categoryResp={categoryResp} />
+                                <CategoryForm categoryResp={categoryResp} setCategoryName={setCategoryName} />
                             </div>
 
                             <RteEditor />
                         </div>
-                    </ContentPages>
+                        <div className="flex py-4 gap-2 justify-end px-6">
+                            <ButtonWhite type="button" text="Cancel" loading={loading.cancel}
+                                onClick={() => setCancelPage(true)}
+                            />
+                            <ButtonSlate type="button" text="Preview" loading={loading.preview}
+                                onClick={() =>
+                                    HandlerPreviewPage()
+                                }
+                            />
+                            <ButtonPrimary type="submit" text="Upload" loading={loading.upload} sizeBtn="px-4" />
+                        </div>
+                    </form>
+                </FormProvider>
+                <PreviewModal
+                    open={showPreview}
+                    closeModal={() => setShowPreview(false)}
+                    data={previewArticle}
+                    category={categoryName}
+                />
+                <AlertModal nameModal="Cancel Page" textModal="Are you sure you want to cancel your changes? Any unsaved data will be lost." nameButton="Ok" openModal={cancelPage} closeModal={() => setCancelPage(false)} handler={HandlerCancelPage} />
+            </ContentPages>
 
-                    <div className="flex py-4 justify-end px-6">
-                        <ButtonComponent type="button" className="border-1 border-slate-200 hover:bg-slate-100 px-4 py-2.5 rounded-md cursor-pointer" name="Cancel" loading={loading.cancel} />
-                        <ButtonComponent type="button" className="bg-slate-200 hover:bg-slate-300 mx-2 px-4 py-2.5 rounded-md cursor-pointer" name="Preview" loading={loading.preview} />
-                        <ButtonComponent type="submit" className="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2.5 rounded-md cursor-pointer" name="Upload" loading={loading.upload} />
-                    </div>
-                </form>
-            </FormProvider>
         </div >
     )
 }
