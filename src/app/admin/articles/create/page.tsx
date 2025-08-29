@@ -113,8 +113,7 @@ const CreateArticlePages = () => {
                 ...data,
                 imageUrl: uploadRes.imageUrl
             }
-            const res = await CreateArticleAPI(payload);
-            console.log("respon => ", res)
+            await CreateArticleAPI(payload);
             router.push(`/admin/articles`);
             setLoading((prev) => ({
                 ...prev,
