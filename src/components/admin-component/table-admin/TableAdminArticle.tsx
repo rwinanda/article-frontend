@@ -2,7 +2,7 @@ import { ArticleResponse } from "@/types/articleTypes"
 import { HandlerDateFormat } from "@/hooks/HandlerDateFormat"
 import Image from "next/image"
 import Link from "next/link"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import HeaderTable from "./HeaderTable"
 
 interface props {
@@ -13,12 +13,13 @@ interface props {
 
 const TableAdminArticle = ({ articleResp, setOpenModalDel, setSelectedData }: props) => {
     const labelHeaders = ["Thumbnails", "Title", "Category", "Created At", "Action"];
+    const [imageLoaded, setImageLoaded] = useState(false);
 
     return (
         <div className="flex flex-col">
             {/* Header Table */}
             <HeaderTable labelHeaders={labelHeaders} />
-            
+
             {/* Data Table */}
             {articleResp.data?.map((article, index) => {
                 const rawDate = article?.updatedAt;
@@ -30,13 +31,22 @@ const TableAdminArticle = ({ articleResp, setOpenModalDel, setSelectedData }: pr
                         <div className="flex justify-center items-center">
                             <div className="w-16 h-16 relative">
                                 {
-                                    
-                                        <Image
-                                            src={article.imageUrl || "/images/image-not-available.jpg"}
-                                            alt={`${article.title}-thumbnails` || "image-not-available"}
-                                            fill
-                                            className='object-cover border-gray-400 rounded-xl'
-                                        /> 
+                                    !imageLoaded && (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-white">
+                                            <span className="text-gray-400 text-sm">Loading...</span>
+                                        </div>
+                                    )
+                                }
+
+                                {/* Actual Image */}
+                                {
+                                    <Image
+                                        src={article.imageUrl || "/images/image-not-available.jpg"}
+                                        alt={`${article.title}-thumbnails` || "image-not-available"}
+                                        fill
+                                        className={`object-cover border-gray-400 rounded-xl ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+                                        onLoadingComplete={() => setImageLoaded(true)}
+                                    />
                                 }
                             </div>
                         </div>
@@ -67,7 +77,7 @@ const TableAdminArticle = ({ articleResp, setOpenModalDel, setSelectedData }: pr
                     </div>
                 )
             })}
-            
+
         </div>
     )
 }
