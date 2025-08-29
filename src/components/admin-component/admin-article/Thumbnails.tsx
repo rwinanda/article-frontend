@@ -6,7 +6,7 @@ interface ThumbnailsProps {
 }
 
 export default function Thumbnails({ setImageFile }: ThumbnailsProps) {
-    const { setValue, watch, formState: { errors } } = useFormContext();
+    const {  formState: { errors } } = useFormContext();
     return (
         <div className="flex flex-col">
             <p>
@@ -14,8 +14,6 @@ export default function Thumbnails({ setImageFile }: ThumbnailsProps) {
             </p>
             <PreviewImageComp
                 setImageFile={setImageFile}
-                imageUrl={watch("imageUrl")}
-                setImageUrl={(url) => setValue("imageUrl", url)}
             />
 
             {/* 🛑 Error Display */}
