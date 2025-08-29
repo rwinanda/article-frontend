@@ -10,9 +10,10 @@ const NotifAlert = ({ showNotif, messageTitle, messageDetail }: NotifAlertProps)
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
+        let timer: NodeJS.Timeout
         if (showNotif) {
             setVisible(true)
-            const timer = setTimeout(() => {
+            timer = setTimeout(() => {
                 setVisible(false);
             }, 3000);
 

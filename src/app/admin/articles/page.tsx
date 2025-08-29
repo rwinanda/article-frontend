@@ -48,7 +48,8 @@ const ArticlePage = () => {
             await DeleteArticleAPI(id);
             await refreshPage()
             setOpenModalDel(false);
-            setShowNotif(true);
+            setShowNotif(false);
+            setTimeout(() => setShowNotif(true), 10);
         } catch (error) {
             console.error(error)
             throw error;
